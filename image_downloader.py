@@ -23,6 +23,14 @@ def main(argv):
         choices=["Google", "Bing", "Baidu", "BaiduShitu"],
     )
     parser.add_argument(
+        "--driver",
+        "-d",
+        type=str,
+        default="chrome_headless",
+        help="Image search engine.",
+        choices=["chrome_headless", "chrome", "phantomjs"],
+    )
+    parser.add_argument(
         "--max-number",
         "-n",
         type=int,
@@ -66,6 +74,22 @@ def main(argv):
         default=None,
         help="Set socks5 proxy (e.g. 192.168.0.2:1080)",
     )
+    # type is not supported for Baidu
+    parser.add_argument(
+        "--type",
+        "-ty",
+        type=str,
+        default=None,
+        help="What kinds of images to download.",
+        choices=["clipart", "linedrawing", "photograph"],
+    )
+    # Bing: color for colored images, bw for black&white images, other color contains Red, orange, yellow, green
+    # Teal, Blue, Purple, Pink, Brown, Black, Gray, White
+    # Baidu: white, bw, black, pink, blue, red, yellow, purple, green, teal, orange, brown
+    # Google: bw, red, orange, yellow, green, teal, blue, purple, pink, white, gray, black, brown
+    parser.add_argument(
+        "--color", "-cl", type=str, default=None, help="Specify the color of desired images."
+    )
 
     args = parser.parse_args(args=argv)
 
@@ -86,7 +110,9 @@ def main(argv):
         safe_mode=args.safe_mode,
         proxy_type=proxy_type,
         proxy=proxy,
-        browser="phantomjs",
+        browser=args.driver,
+        image_type=args.type,
+        color=args.color,
     )
     downloader.download_images(
         image_urls=crawled_urls,

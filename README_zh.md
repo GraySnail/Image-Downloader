@@ -5,7 +5,7 @@
 ## 1. 简介
 
 - 从图片搜索引擎，爬取关键字搜索的原图 URL 并下载
-- 开发语言 python，采用 Requests、Selenium、Phantomjs 等库进行开发
+- 开发语言 python，采用 Requests、Selenium 等库进行开发
 
 ## 2. 功能
 
@@ -16,76 +16,50 @@
 - 支持搜索引擎的条件查询（如 :site）
 - 支持 Google 的安全模式开启和关闭
 - 支持 socks5 和 http 代理的配置，方便科学上网用户
-- **提供预编译的 windows 单文件可执行 exe 下载, 推荐非开发者用户使用。[点此下载](https://github.com/sczhengyabin/Google-Image-Downloader/releases)**
-- 命令行添加“百度识图”图片下载
 
-## 3. 解决依赖
+* 命令行添加“百度识图”图片下载
 
-### 3.1 Windows 环境
+## 3. 安装
 
-#### 3.1.1 下载并安装 python3.5
+### 3.1 下载并安装 python3.5+
 
-- [下载地址](https://www.python.org/ftp/python/3.5.3/python-3.5.3.exe)
-- 安装时请注意勾选"add to PATH"
+- [下载地址](https://www.python.org/downloads/)
 
-#### 3.1.2 下载并安装 PyQt5
+### 3.2 下载 chromedriver 并配置[推荐]
 
-- [下载地址](https://sourceforge.net/projects/pyqt/files/PyQt5/PyQt-5.6/PyQt5-5.6-gpl-Py3.5-Qt5.6.0-x32-2.exe/download)
+- [下载地址](https://chromedriver.chromium.org/downloads)
+- 选择对应系统、chrome 浏览器的版本
+- 下载完成后将`chromedriver`拷贝到 "本项目文件夹/bin/"，或者其他文件夹后添加到 PATH 中
 
-#### 3.1.3 下载 phantomjs 并配置
+### 3.3 下载 phantomjs 并配置[过时]
 
 - [下载地址](https://bitbucket.org/ariya/phantomjs/downloads)
 - 选择最新的 windows 版本下载即可
-- 下载完成后将 phantomjs.exe 拷贝到 "本项目文件夹/bin/"
+- 下载完成后将 phantomjs.exe 拷贝到 "本项目文件夹/bin/"，或者其他文件夹后添加到 PATH 中
 
-#### 3.1.4 安装相关 python 库
+### 3.4 安装相关 python 库
 
+```bash
+pip3 install -r requirements.txt
 ```
-pip3.exe install -r requirements.txt
-```
-
-#### 3.1.5 [可选] 打包成单个可执行文件
-
-确保 3.1.3 步骤完成后，CMD 进到项目文件夹，执行如下命令：
-
-```
-pip3.exe install pyinstaller
-pyinstaller image_downloader_gui.spec
-```
-
-命令完成后，exe 文件在 ./dist 文件夹中
-
-### 3.2 Linux 环境（debian 系列）
-
-#### 3.2.1 安装依赖库
-
-```
-apt-get install python3-pip python3-pyqt5 pyqt5-dev-tools
-```
-
-#### 3.2.2 下载 Phantomjs 并配置
-
-- [x86 PC 用户下载地址](https://bitbucket.org/ariya/phantomjs/downloads) （官方）
-- [树莓派用户下载地址](https://github.com/fg2it/phantomjs-on-raspberry/releases)（无官方版本，第三方通过源码编译）
-
-**[警告]: 通过 apt-get 安装的 phantomjs 为非完整版，无法在本项目中使用.**
-
-下载完成后，将 phantomjs 文件路径添加至 PATH 环境变量，或者将其拷贝到/usr/local/bin 文件夹。
 
 ## 4. 如何使用
 
 ### 4.1 图形界面
 
-```
-image_downloader_gui.py
+运行`image_downloader_gui.py`脚本以启动 GUI 界面
+
+```bash
+python image_downloader_gui.py
 ```
 
-![](/GUI.png)
+![GUI](/GUI.png)
 
 ### 4.2 命令行
 
-```
+```bash
 usage: image_downloader.py [-h] [--engine {Google,Bing,Baidu}]
+                           [--driver {chrome_headless,chrome,phantomjs}]
                            [--max-number MAX_NUMBER]
                            [--num-threads NUM_THREADS] [--timeout TIMEOUT]
                            [--output OUTPUT] [--safe-mode] [--face-only]
@@ -101,6 +75,10 @@ usage: image_downloader.py [-h] [--engine {Google,Bing,Baidu}]
 ```bash
 python image_downloader.py --engine=BaiduShitu --max-number=10 --num-threads=50 --output=./images/test2 --safe-mode 122edc2c6ef4a7048501101628227246
 ```
+
+## 备注
+
+由于 Google 修改了前端页面，无法直接从单个页面获取全部图片的原始链接，所以需要通过模拟人工点击操作遍历所有图片，因此使用 Google 引擎来爬取图片时间较长，如需加速可以减少单个关键字的最大图片数量。
 
 ## 许可
 
