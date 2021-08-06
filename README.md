@@ -64,6 +64,9 @@ pip3 install -r requirements.txt
 ```
 ## 4. Usage
 ### 4.1 GUI
+```
+image_downloader_gui.py
+```
 ![](/GUI.png)
 ### 4.2 CMD
 ```
